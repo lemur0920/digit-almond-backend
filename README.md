@@ -32,7 +32,7 @@
 <br/>
 <br/>
 
-# 5. Key Features (주요 기능)
+# 5. Key Features
 - **회원가입**:
   - 회원가입 시 DB에 유저정보가 등록됩니다.
 
@@ -42,15 +42,16 @@
 <br/>
 <br/>
 
-# 5. Technology Stack (기술 스택)
+# 5. Technology Stack
 ## 5.1 Language
-|  |  |
+|  |  |  
 |-----------------|-----------------|
 | HTML5    |<img src="https://github.com/user-attachments/assets/2e122e74-a28b-4ce7-aff6-382959216d31" alt="HTML5" width="100">| 
 | CSS3    |   <img src="https://github.com/user-attachments/assets/c531b03d-55a3-40bf-9195-9ff8c4688f13" alt="CSS3" width="100">|
 | JavaScript    |  <img src="https://github.com/user-attachments/assets/4a7d7074-8c71-48b4-8652-7431477669d1" alt="Javascript" width="100"> | 
 | TypeScript    |  <img src="https://github.com/user-attachments/assets/5d9e0e5e-fc01-4e56-b5f9-213e1d4cffe0" alt="Javascript" width="100"> | 
 | Python    |  <img src="https://github.com/user-attachments/assets/7ab697fc-b13f-461f-b780-7c329aa2416d" alt="Javascript" width="100"> | 
+
 
 <br/>
 
