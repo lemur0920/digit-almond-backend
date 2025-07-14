@@ -27,56 +27,36 @@
 <br/>
 <br/>
 
-# 4. DB ERD
+# 4. Stacks
+<div align=center> 
+<img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> 
+<img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
+<img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white">
+<br>
 
+<img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> 
+<img src="https://img.shields.io/badge/CSS-663399?style=for-the-badge&logo=CSS&logoColor=white"> 
+<br>
+
+<img src="https://img.shields.io/badge/mongodb-47A248?style=for-the-badge&logo=mongodb&logoColor=white"> 
+<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=white"> 
+<img src="https://img.shields.io/badge/nodedotjs-5FA04E?style=for-the-badge&logo=nodedotjs&logoColor=white"> 
+<br>
+
+<img src="https://img.shields.io/badge/nestjs-E0234E?style=for-the-badge&logo=nestjs&logoColor=white"> 
+<img src="https://img.shields.io/badge/linux-FCC624?style=for-the-badge&logo=linux&logoColor=black"> 
+<img src="https://img.shields.io/badge/amazonaws-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white"> 
+<br>
+
+<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+<img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
+<br>
+
+</div>
 <br/>
 <br/>
 
-# 5. Key Features
-- **회원가입**:
-  - 회원가입 시 DB에 유저정보가 등록됩니다.
-
-- **로그인**:
-  - 사용자 인증 정보를 통해 로그인합니다.
-
-<br/>
-<br/>
-
-# 5. Technology Stack
-## 5.1 Language
-|  |  |  
-|-----------------|-----------------|
-| HTML5    |<img src="https://github.com/user-attachments/assets/2e122e74-a28b-4ce7-aff6-382959216d31" alt="HTML5" width="100">| 
-| CSS3    |   <img src="https://github.com/user-attachments/assets/c531b03d-55a3-40bf-9195-9ff8c4688f13" alt="CSS3" width="100">|
-| JavaScript    |  <img src="https://github.com/user-attachments/assets/4a7d7074-8c71-48b4-8652-7431477669d1" alt="Javascript" width="100"> | 
-| TypeScript    |  <img src="https://github.com/user-attachments/assets/5d9e0e5e-fc01-4e56-b5f9-213e1d4cffe0" alt="Javascript" width="100"> | 
-| Python    |  <img src="https://github.com/user-attachments/assets/7ab697fc-b13f-461f-b780-7c329aa2416d" alt="Javascript" width="100"> | 
-
-
-<br/>
-
-## 5.2 Frontend
-<!-- |  |  |  |
-|-----------------|-----------------|-----------------|
-| React    |  <img src="https://github.com/user-attachments/assets/e3b49dbb-981b-4804-acf9-012c854a2fd2" alt="React" width="100"> | 18.3.1    |
-| StyledComponents    |  <img src="https://github.com/user-attachments/assets/c9b26078-5d79-40cc-b120-69d9b3882786" alt="StyledComponents" width="100">| 6.1.12   |
-| MaterialUI    |  <img src="https://github.com/user-attachments/assets/75a46fa7-ebc0-4a9d-b648-c589f87c4b55" alt="MUI" width="100">    | 5.0.0  |
-| DayJs    |  <img src="https://github.com/user-attachments/assets/7ab697fc-b13f-461f-b780-7c329aa2416d" alt="DayJs" width="100">    | 1.11.12    | -->
-
-<br/>
-
-## 5.3 Backend
-<!-- |  |  |  |
-|-----------------|-----------------|-----------------|
-| Firebase    |  <img src="https://github.com/user-attachments/assets/1694e458-9bb0-4a0b-8fe6-8efc6e675fa1" alt="Firebase" width="100">    | 10.12.5    | -->
-
-<br/>
-
-## 5.4 Cooperation
-|  |  |
-|-----------------|-----------------|
-| Git    |  <img src="https://github.com/user-attachments/assets/483abc38-ed4d-487c-b43a-3963b33430e6" alt="git" width="100">    |
-| Jandi    |  <img src="https://github.com/user-attachments/assets/8a513434-583b-47ef-84b1-48732fe1e7e8" alt="Jandi" width="100">    |
+# 5. DB ERD
 
 <br/>
 <br/>
@@ -97,8 +77,18 @@ digit-almond-backend/
 │
 └── ...
 
-- 수정중
 ```
+<br/>
+<br/>
+
+# 7. Key Features
+- **회원가입**:
+  - 회원가입 시 DB에 유저정보가 등록됩니다.
+
+- **로그인**:
+  - 사용자 인증 정보를 통해 로그인합니다.
 
 <br/>
 <br/>
+
+
