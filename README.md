@@ -14,7 +14,7 @@
 
 # 2. Team Members 
 | 공백 | 장성권 | 공백 | 공백 | 공백 | 공백 |
-|:------:|:------:|:------:|:------:|
+|:------:|:------:|:------:|:------:|:------:|:------:|
 | <img src="https://github.com/user-attachments/assets/4a72443c-2141-4cc4-ac7d-344e23b27511" alt="장성권" width="150"> | <img src="https://github.com/user-attachments/assets/4a72443c-2141-4cc4-ac7d-344e23b27511" alt="공백" width="150"> | <img src="https://github.com/user-attachments/assets/4a72443c-2141-4cc4-ac7d-344e23b27511" alt="공백" width="150"> | <img src="https://github.com/user-attachments/assets/4a72443c-2141-4cc4-ac7d-344e23b27511" alt="공백" width="150"> | <img src="https://github.com/user-attachments/assets/4a72443c-2141-4cc4-ac7d-344e23b27511" alt="공백" width="150"> | <img src="https://github.com/user-attachments/assets/4a72443c-2141-4cc4-ac7d-344e23b27511" alt="공백" width="150"> | 
 | PL | BE | FE | FE | DB | AI | 
 | [GitHub](https://github.com/공백) | [GitHub](https://github.com/lemur0920) | [GitHub](https://github.com/공백) | [GitHub](https://github.com/공백) | [GitHub](https://github.com/공백) | [GitHub](https://github.com/공백) |
@@ -50,7 +50,7 @@
 | CSS3    |   <img src="https://github.com/user-attachments/assets/c531b03d-55a3-40bf-9195-9ff8c4688f13" alt="CSS3" width="100">|
 | JavaScript    |  <img src="https://github.com/user-attachments/assets/4a7d7074-8c71-48b4-8652-7431477669d1" alt="Javascript" width="100"> | 
 | TypeScript    |  <img src="https://github.com/user-attachments/assets/5d9e0e5e-fc01-4e56-b5f9-213e1d4cffe0" alt="Javascript" width="100"> | 
-| Python    |  <img src="https://github.com/user-attachments/assets/4a7d7074-8c71-48b4-8652-7431477669d1" alt="Javascript" width="100"> | 
+| Python    |  <img src="https://github.com/user-attachments/assets/7ab697fc-b13f-461f-b780-7c329aa2416d" alt="Javascript" width="100"> | 
 
 <br/>
 
@@ -81,7 +81,6 @@
 <br/>
 
 # 6. Project Structure 
-```plaintext
 ```
 digit-almond-backend/
 ├── src/
@@ -96,8 +95,6 @@ digit-almond-backend/
 │   └── jest-e2e.json             
 │
 └── ...
-
-```
 
 - 수정중
 ```
