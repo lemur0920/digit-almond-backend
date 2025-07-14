@@ -23,7 +23,8 @@
 <br/>
 
 # 3. Demo 
-🔎Demo : https://github.com/lemur0920/digit-almond-backend
+https://github.com/lemur0920/digit-almond-backend
+<br>
 ID: hiyo
 PW: abcde123
 
