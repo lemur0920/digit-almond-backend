@@ -6,10 +6,39 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  password  String   @unique
+  firstName String
+  lastName  String
+  country   String
+  point     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cityId String? @db.ObjectId
+  city   City?   @relation(fields: [cityId], references: [id])
+
+  @@map("users") // 몽고DB 컬렉션명
+}
+
+model City {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String @unique
+  country     String @unique
+  imgUrl      String
+  dnScore     Int
+  description String
+
+  users User[]
+
+  @@map("cities") // 몽고DB 컬렉션명
 }
