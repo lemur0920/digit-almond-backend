@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -20,25 +14,44 @@ model User {
   firstName String
   lastName  String
   country   String
-  point     Int
+  point     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  cityId String? @db.ObjectId
-  city   City?   @relation(fields: [cityId], references: [id])
+  cityCode Int?
+  city     City? @relation(fields: [cityCode], references: [cityCode])
 
   @@map("users") // 몽고DB 컬렉션명
 }
 
+model Country {
+  id         String @id @map("_id") // KR, US 등의 ISO 코드
+  name       String
+  nativeName String
+  cities     City[] @relation("CountryCities")
+
+  @@map("countries")
+}
+
 model City {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
-  name        String @unique
-  country     String @unique
-  imgUrl      String
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  cityCode    Int     @unique
+  countryCode String
+  imgUrl      String?
   dnScore     Int
   description String
 
-  users User[]
+  users   User[]
+  Country Country? @relation("CountryCities", fields: [countryCode], references: [id])
 
+  @@unique([countryCode, name])
   @@map("cities") // 몽고DB 컬렉션명
+}
+
+model Counter {
+  id  String @id @default(auto()) @map("_id") @db.ObjectId
+  seq Int    @unique
+
+  @@map("counter")
 }
