@@ -23,4 +23,12 @@ export class UsersController {
   getProfile(@Req() req) {
     return req.user;
   }
+
+  async createProfile(
+
+  ){
+
+  }
+
+
 }

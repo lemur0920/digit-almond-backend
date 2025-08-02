@@ -7,21 +7,160 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Tag {
+  RECRUIT  @map("Recruit")
+  INFO     @map("Info")
+  QUESTION @map("Question")
+}
+
+enum MissionType {
+  DAILY   @map("Daily")
+  WEEKLY  @map("Weekly")
+  MONTHLY @map("Monthly")
+}
+
+enum Priority {
+  LOW    @map("Low")
+  MIDDLE @map("Middle")
+  HIGH   @map("High")
+}
+
+enum Trigger {
+  POST_CREATED    @map("post_created")
+  COMMENT_CREATED @map("comment_created")
+  LOGIN           @map("login")
+}
+
+enum AlarmType {
+  COMMENT @map("Comment")
+  SYSTEM  @map("System")
+  EVENT   @map("Event")
+  MISSION @map("Mission")
+}
+
 model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  email     String   @unique
-  password  String   @unique
-  firstName String
-  lastName  String
-  country   String
-  point     Int      @default(0)
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  email        String   @unique
+  password     String   @unique
+  firstName    String
+  lastName     String
+  country      String
+  point        Int      @default(0)
+  firstLoginAt DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  cityCode Int?
+  city     City?     @relation(fields: [cityCode], references: [cityCode])
+  Profile  Profile?
+  posts    Post[]    @relation("UserPosts")
+  Comment  Comment[]
+
+  missions UserMission[]
+  Badges   UserBadge[]
+  badgeId  String?       @db.ObjectId
+
+  @@map("users") // 몽고DB 컬렉션명
+}
+
+model Profile {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @unique @db.ObjectId
+  nickname    String
+  description String?
+  imgUrl      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Post {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  content   String
+  tag       Tag?
+  viewCount Int
+  isDeleted Boolean
+
+  userId String @db.ObjectId
+  user   User   @relation("UserPosts", fields: [userId], references: [id])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Comments  Comment[]
+}
+
+model Comment {
+  id          String  @id @map("_id") @db.ObjectId
+  postId      String  @db.ObjectId
+  commentorId String  @db.ObjectId
+  content     String
+  isDeleted   Boolean
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  cityCode Int?
-  city     City? @relation(fields: [cityCode], references: [cityCode])
+  post      Post @relation(fields: [postId], references: [id])
+  commentor User @relation(fields: [commentorId], references: [id])
+}
 
-  @@map("users") // 몽고DB 컬렉션명
+model TodoList {
+  id          String    @id @map("_id") @db.ObjectId
+  title       String
+  description String?
+  isDone      Boolean
+  priority    Priority
+  dueDate     DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Mission {
+  id      String      @id @map("_id") @db.ObjectId
+  title   String
+  type    MissionType
+  trigger Trigger
+  goal    Int
+  reward  Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users UserMission[]
+}
+
+model UserMission {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String @db.ObjectId
+  missionId String @db.ObjectId
+
+  User    User    @relation(fields: [userId], references: [id])
+  Mission Mission @relation(fields: [missionId], references: [id])
+
+  progress    Int
+  isCompleted Boolean
+  completedAt DateTime?
+}
+
+model Badge {
+  id          String  @id @map("_id") @db.ObjectId
+  name        String
+  description String
+  iconUrl     String?
+  criteria    Json // 뱃지 획득 조건
+
+  users UserBadge[]
+}
+
+model UserBadge {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  User    User   @relation(fields: [userId], references: [id])
+  userId  String @db.ObjectId
+  Badge   Badge  @relation(fields: [badgeId], references: [id])
+  badgeId String @db.ObjectId
+
+  acquiredAt DateTime
 }
 
 model Country {
@@ -47,6 +186,14 @@ model City {
 
   @@unique([countryCode, name])
   @@map("cities") // 몽고DB 컬렉션명
+}
+
+model Alarm {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  receiverId String
+  type       AlarmType
+  isRead     Boolean
+  createdAt  DateTime  @default(now())
 }
 
 model Counter {

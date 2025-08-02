@@ -48,11 +48,11 @@ export class UsersService {
     const user = await this.prisma.user.findUnique({
       where: { email: email }
     })
-    if (!user) {
-      throw new CustomException(EXCEPTION_STATUS.USER.NOT_FOUND);
-    }
-
     return user;
+  }
+
+  async createProfile(id: string, ) {
+
   }
 
   async validatePassword(password: string, hashedPassword: string): Promise<boolean> {

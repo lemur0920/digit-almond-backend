@@ -13,22 +13,11 @@ export class AuthController {
   ) {}
 
   @Post('login')
-  async login(@Body() loginDto: LoginDto):Promise<ResponseDto<string>> {
-    const user = await this.usersService.findByEmail(loginDto.email);
-
-    const isPasswordValid = await this.usersService.validatePassword(
-      loginDto.password,
-      user.password,
-      );
-
-    if (!isPasswordValid) {
-      throw new CustomException(EXCEPTION_STATUS.AUTH.INVALID_CREDENTIALS);
-    }
-
-    const accessToken = this.authService.generateAccessToken(user);
+  async login(@Body() loginDto: LoginDto): Promise<ResponseDto<string>> {
+    const accessToken = await this.authService.login(loginDto);
     return ResponseDto.success({
       message: "로그인 성공",
-      data: accessToken
-    })
+      data: accessToken,
+    });
   }
 }
