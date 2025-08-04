@@ -11,10 +11,18 @@ import { CitiesModule } from './cities/cities.module';
 import { AlarmsModule } from './alarms/alarms.module';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
 @Module({
   imports: [UsersModule, AuthModule, TodosModule, PostsModule, MissionsModule, BadgesModule, CitiesModule, AlarmsModule, PrismaModule, ConfigModule.forRoot(({ isGlobal: true }))],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+    AppService
+  ],
 })
 export class AppModule {}

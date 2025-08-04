@@ -4,12 +4,15 @@ import { CreateUserDto } from './dtos/create-user.dto';
 import { CitiesService } from '../cities/cities.service';
 import { CustomException, EXCEPTION_STATUS } from '../common/custom-exception';
 import * as bcrypt from 'bcrypt';
-import { User } from '@prisma/client';
+import { Profile, User } from '@prisma/client';
+import { CreateProfileDto } from './dtos/create-profile.dto';
+import { UsersRepository } from './users.repository';
 
 @Injectable()
 export class UsersService {
   constructor(
     private readonly prisma: PrismaService,
+    private readonly usersRepository: UsersRepository,
     private readonly citiesService: CitiesService
   ) {}
 
@@ -17,9 +20,7 @@ export class UsersService {
     if (createUserDto.password !== createUserDto.password2) {
       throw new CustomException(EXCEPTION_STATUS.AUTH.UNMATCHED_PASSWORD);
     }
-    const existingUser = await this.prisma.user.findUnique({
-      where: { email: createUserDto.email },
-    });
+    const existingUser = await this.usersRepository.findByEmail(createUserDto.email);
 
     if (existingUser) {
       throw new CustomException(EXCEPTION_STATUS.USER.ALREADY_EXISTS);
@@ -28,31 +29,31 @@ export class UsersService {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(createUserDto.password, saltRounds);
 
-    const city = await this.citiesService.findByCityCode(createUserDto.cityCode);
+    const city = await this.citiesService.findCityByCityCode(createUserDto.cityCode);
+
     if (!city) {
       throw new CustomException(EXCEPTION_STATUS.CITY.NOT_EXISTS);
     }
 
     const { password2, ...userData } = createUserDto;
-
+    console.log(userData)
     return this.prisma.user.create({
       data: {
         ...userData,
         password: hashedPassword,
         cityCode: city.cityCode,
+        firstLoginAt: null
       }
     })
   }
 
-  async findByEmail(email: string): Promise<User> {
-    const user = await this.prisma.user.findUnique({
-      where: { email: email }
+  async createProfile(userId: string, createProfileDto: CreateProfileDto): Promise<Profile> {
+    return this.prisma.profile.create({
+      data: {
+        ...createProfileDto,
+        userId: userId
+      }
     })
-    return user;
-  }
-
-  async createProfile(id: string, ) {
-
   }
 
   async validatePassword(password: string, hashedPassword: string): Promise<boolean> {

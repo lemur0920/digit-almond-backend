@@ -21,9 +21,12 @@ export class CreateUserDto {
 
   @IsOptional()
   @IsInt()
-  point?: number
+  point?: number;
 
   @IsOptional()
-  @IsNumber()
+  @IsInt()
   cityCode?: number;
+
+  // @IsOptional()
+  // firstLoginAt?: Date;
 }

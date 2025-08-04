@@ -8,11 +8,10 @@ import { CustomException, EXCEPTION_STATUS } from '../common/custom-exception';
 export class CitiesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findByCityCode(cityCode: number): Promise<City> {
+  async findCityByCityCode(cityCode: number): Promise<City> {
     const city = await this.prisma.city.findUnique({
       where: { cityCode: cityCode }
     })
-    if (!city) throw new CustomException(EXCEPTION_STATUS.CITY.NOT_EXISTS);
     return city;
   }
 

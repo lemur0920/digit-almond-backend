@@ -4,7 +4,7 @@ export const EXCEPTION_STATUS = {
   AUTH: {
     INVALID_TOKEN: {
       errorCode: 10001,
-      message: '유효하지 않은 토큰입니다..',
+      message: '유효하지 않거나 만료된 토큰입니다.',
       statusCode: 401,
     },
     TOKEN_EXPIRED: {

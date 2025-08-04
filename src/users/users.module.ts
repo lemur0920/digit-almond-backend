@@ -3,11 +3,12 @@ import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { CitiesService } from '../cities/cities.service';
 import { CitiesModule } from '../cities/cities.module';
+import { UsersRepository } from './users.repository';
 
 @Module({
   imports: [CitiesModule],
   controllers: [UsersController],
-  providers: [UsersService],
-  exports: [UsersService]
+  providers: [UsersService, UsersRepository],
+  exports: [UsersService, UsersRepository]
 })
 export class UsersModule {}

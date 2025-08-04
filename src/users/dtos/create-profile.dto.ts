@@ -2,13 +2,13 @@ import { IsOptional, IsString } from 'class-validator';
 
 export class CreateProfileDto {
   @IsString()
-  nickname: string
+  nickname: string;
 
   @IsString()
   @IsOptional()
-  description?: string
+  description?: string;
 
   @IsString()
-  @IsOptional
-  imgUrl?: string
+  @IsOptional()
+  imgUrl?: string;
 }

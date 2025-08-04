@@ -39,22 +39,24 @@ enum AlarmType {
 }
 
 model User {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  email        String   @unique
-  password     String   @unique
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  email        String    @unique
+  password     String    @unique
   firstName    String
   lastName     String
   country      String
-  point        Int      @default(0)
-  firstLoginAt DateTime
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  point        Int       @default(0)
+  firstLoginAt DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 
   cityCode Int?
-  city     City?     @relation(fields: [cityCode], references: [cityCode])
+  city     City?         @relation(fields: [cityCode], references: [cityCode])
   Profile  Profile?
-  posts    Post[]    @relation("UserPosts")
+  posts    Post[]        @relation("UserPosts")
   Comment  Comment[]
+  token    RefreshToken? @relation
+  tokenId  String?       @db.ObjectId
 
   missions UserMission[]
   Badges   UserBadge[]
@@ -114,6 +116,8 @@ model TodoList {
   dueDate     DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+
+  @@map("todo_list")
 }
 
 model Mission {
@@ -141,14 +145,16 @@ model UserMission {
   progress    Int
   isCompleted Boolean
   completedAt DateTime?
+
+  @@map("user_missions")
 }
 
 model Badge {
-  id          String  @id @map("_id") @db.ObjectId
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   description String
   iconUrl     String?
-  criteria    Json // 뱃지 획득 조건
+  criteria    Json    @unique // 뱃지 획득 조건
 
   users UserBadge[]
 }
@@ -161,6 +167,8 @@ model UserBadge {
   badgeId String @db.ObjectId
 
   acquiredAt DateTime
+
+  @@map("user_badges")
 }
 
 model Country {
@@ -194,6 +202,17 @@ model Alarm {
   type       AlarmType
   isRead     Boolean
   createdAt  DateTime  @default(now())
+}
+
+model RefreshToken {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  token  String @unique
+  userId String @unique @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id])
+
+  expiresAt DateTime
+
+  @@map("refresh_tokens")
 }
 
 model Counter {
