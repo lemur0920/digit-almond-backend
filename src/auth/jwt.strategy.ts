@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
+import { CustomException, EXCEPTION_STATUS } from '../common/custom-exception';
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor() {
@@ -12,7 +13,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    console.log('Payload:', payload);
+    if (!payload || !payload.sub) {
+      throw new CustomException(EXCEPTION_STATUS.AUTH.INVALID_TOKEN);
+    }
     return { userId: payload.sub, email: payload.email };
   }
 }

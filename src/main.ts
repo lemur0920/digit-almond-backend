@@ -15,6 +15,7 @@ async function bootstrap() {
       transform: true
     })
   )
+  // app.useGlobalGuards(new JwtAuthGuard());
   app.useGlobalInterceptors(new DateFormatInterceptor());
   await app.listen(3000);
 }

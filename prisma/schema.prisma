@@ -61,6 +61,7 @@ model User {
   missions UserMission[]
   Badges   UserBadge[]
   badgeId  String?       @db.ObjectId
+  todos    Todo[]
 
   @@map("users") // 몽고DB 컬렉션명
 }
@@ -75,6 +76,8 @@ model Profile {
   updatedAt   DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])
+
+  @@map("profiles")
 }
 
 model Post {
@@ -91,6 +94,8 @@ model Post {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   Comments  Comment[]
+
+  @@map("posts")
 }
 
 model Comment {
@@ -105,19 +110,24 @@ model Comment {
 
   post      Post @relation(fields: [postId], references: [id])
   commentor User @relation(fields: [commentorId], references: [id])
+
+  @@map("comments")
 }
 
-model TodoList {
-  id          String    @id @map("_id") @db.ObjectId
+model Todo {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @db.ObjectId
   title       String
   description String?
-  isDone      Boolean
+  isDone      Boolean  @default(false)
   priority    Priority
-  dueDate     DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
 
-  @@map("todo_list")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("todos")
 }
 
 model Mission {
@@ -132,6 +142,8 @@ model Mission {
   updatedAt DateTime @updatedAt
 
   users UserMission[]
+
+  @@map("missions")
 }
 
 model UserMission {
@@ -157,6 +169,8 @@ model Badge {
   criteria    Json    @unique // 뱃지 획득 조건
 
   users UserBadge[]
+
+  @@map("badges")
 }
 
 model UserBadge {
@@ -202,6 +216,8 @@ model Alarm {
   type       AlarmType
   isRead     Boolean
   createdAt  DateTime  @default(now())
+
+  @@map("alarms")
 }
 
 model RefreshToken {

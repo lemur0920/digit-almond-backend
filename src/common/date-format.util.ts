@@ -1,3 +1,7 @@
+import { format, toZonedTime } from 'date-fns-tz';
+
 export const formatDate = (date: Date): string => {
-  return date.toISOString().replace('T', ' ').substring(0, 19);
+  const timeZone = 'Asia/Seoul'; // 한국 시간대
+  const zonedDate = toZonedTime(date, timeZone); // UTC를 KST로 변환
+  return format(zonedDate, 'yyyy-MM-dd HH:mm:ss', { timeZone }); // 포맷팅
 };

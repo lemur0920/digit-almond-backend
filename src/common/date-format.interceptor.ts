@@ -19,6 +19,9 @@ export class DateFormatInterceptor implements NestInterceptor {
       for (const key in data) {
         if (data[key] instanceof Date) {
           data[key] = formatDate(data[key]);
+        } else if (typeof data[key] === 'string' && !isNaN(Date.parse(data[key]))) {
+          // ISO 8601 문자열을 Date 객체로 변환 후 포맷팅
+          data[key] = formatDate(new Date(data[key]));
         } else if (typeof data[key] === 'object') {
           data[key] = this.formatDates(data[key]);
         }

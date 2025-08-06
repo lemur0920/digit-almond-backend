@@ -43,13 +43,15 @@ export class AuthService {
     return refreshToken;
   }
 
-  async revokeRefreshToken(token: string): Promise<void> {
-    await this.prisma.refreshToken.deleteMany({
-      where: { token },
+  async revokeRefreshToken(userId: string): Promise<void> {
+    const token = await this.prisma.refreshToken.deleteMany({
+      where: {
+        userId: userId
+      },
     });
   }
 
-  async refreshAccessToken(refreshToken: string): Promise<string> {
+  async refreshAccessToken(refreshToken: string): Promise<{ accessToken: string; refreshToken: string }> {
     const storedToken = await this.prisma.refreshToken.findUnique({
       where: { token: refreshToken },
     });
@@ -66,10 +68,13 @@ export class AuthService {
       throw new CustomException(EXCEPTION_STATUS.USER.NOT_FOUND);
     }
 
-    return this.generateAccessToken(user);
+    const newAccessToken = this.generateAccessToken(user);
+    const newRefreshToken = await this.generateRefreshToken(user);
+
+    return { accessToken: newAccessToken, refreshToken: newRefreshToken };
   }
 
-  async login(loginDto: LoginDto): Promise<string> {
+  async login(loginDto: LoginDto): Promise<{ accessToken: string, refreshToken: string }> {
     const user = await this.usersRepository.findByEmail(loginDto.email);
     if (!user) {
       throw new CustomException(EXCEPTION_STATUS.USER.NOT_FOUND);
@@ -113,11 +118,14 @@ export class AuthService {
         });
       }
     }
+    const accessToken = this.generateAccessToken(user);
+    const refreshToken = await this.generateRefreshToken(user);
 
-    return this.generateAccessToken(user);
+    return { accessToken, refreshToken };
+
   }
 
-  async logout(refreshToken: string): Promise<void> {
-    await this.revokeRefreshToken(refreshToken)
+  async logout(userId: string): Promise<void> {
+    await this.revokeRefreshToken(userId)
   }
 }

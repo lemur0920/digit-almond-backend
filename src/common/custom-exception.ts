@@ -31,8 +31,13 @@ export const EXCEPTION_STATUS = {
       errorCode: 10006,
       message: '비밀번호 확인이 일치하지 않습니다.',
       statusCode: 400
+    },
+    INVALID_PASSWORD: {
+      errorCode: 10007,
+      message: '비밀번호가 일치하지 않습니다.',
+      statusCode: 400
     }
-  },
+    },
   USER: {
     ALREADY_EXISTS: {
       errorCode: 20001,
@@ -61,6 +66,13 @@ export const EXCEPTION_STATUS = {
     NOT_EXISTS: {
       errorCode: 40001,
       message: '해당 국가는 존재하지 않습니다.',
+      statusCode: 404
+    }
+  },
+  TODO: {
+    NOT_FOUND: {
+      errorCode: 50001,
+      message: '해당 ID를 가진 투두 목록이 존재하지 않습니다.',
       statusCode: 404
     }
   }
