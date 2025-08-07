@@ -186,10 +186,10 @@ model UserBadge {
 }
 
 model Country {
-  id         String @id @map("_id") // KR, US 등의 ISO 코드
-  name       String
-  nativeName String
-  cities     City[] @relation("CountryCities")
+  id          String @id @map("_id") // KR, US 등의 ISO 코드
+  koreanName  String
+  englishName String
+  cities      City[] @relation("CountryCities")
 
   @@map("countries")
 }

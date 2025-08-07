@@ -36,4 +36,12 @@ export class TodosService {
       data: { ...updateTodoDto }
     })
   }
+  async deleteTodo(id: string): Promise<void> {
+    if (!id) {
+      throw new CustomException(EXCEPTION_STATUS.TODO.NOT_FOUND);
+    }
+    this.prisma.todo.delete({
+      where: { id: id }
+    })
+  }
 }

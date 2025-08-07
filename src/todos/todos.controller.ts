@@ -1,4 +1,4 @@
-import { Body, Controller, Patch, Post, Req, Param, Get } from '@nestjs/common';
+import { Body, Controller, Patch, Post, Req, Param, Get, Delete } from '@nestjs/common';
 import { TodosService } from './todos.service';
 import { CreateTodoDto } from './dtos/create-todo.dto';
 import { ResponseDto } from '../common/response.dto';
@@ -40,6 +40,14 @@ export class TodosController {
     return ResponseDto.success({
       message: '투두 수정 성공',
       data: updatedTodo
+    })
+  }
+
+  @Delete(':id')
+  async deleteTodo(@Param('id') id: string): Promise<ResponseDto<void>> {
+    await this.todosService.deleteTodo(id);
+    return ResponseDto.success({
+      message: '투두 삭제 성공',
     })
   }
 }
