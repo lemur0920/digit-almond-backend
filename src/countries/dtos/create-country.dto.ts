@@ -2,7 +2,7 @@ import { IsOptional, IsString } from 'class-validator';
 
 export class CreateCountryDto {
   @IsString()
-  country: string;
+  countryCode: string;
 
   @IsString()
   koreanName: string;

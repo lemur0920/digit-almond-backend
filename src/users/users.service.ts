@@ -9,13 +9,15 @@ import { CreateProfileDto } from './dtos/create-profile.dto';
 import { UsersRepository } from './users.repository';
 import { UpdateProfileDto } from './dtos/update-profile.dto';
 import { ChangePasswordDto } from './dtos/change-password.dto';
+import { CountriesService } from '../countries/countries.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly usersRepository: UsersRepository,
-    private readonly citiesService: CitiesService
+    private readonly citiesService: CitiesService,
+    private readonly countriesService: CountriesService
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
@@ -32,9 +34,12 @@ export class UsersService {
     const hashedPassword = await bcrypt.hash(createUserDto.password, saltRounds);
 
     const city = await this.citiesService.findCityByCityCode(createUserDto.cityCode);
-
     if (!city) {
       throw new CustomException(EXCEPTION_STATUS.CITY.NOT_EXISTS);
+    }
+    const country = await this.countriesService.findCountryByCountryCode(createUserDto.countryCode);
+    if(!country) {
+      throw new CustomException(EXCEPTION_STATUS.COUNTRY.NOT_EXISTS);
     }
 
     const { password2, ...userData } = createUserDto;
@@ -44,6 +49,7 @@ export class UsersService {
         ...userData,
         password: hashedPassword,
         cityCode: city.cityCode,
+        countryCode: country.countryCode,
         firstLoginAt: null
       }
     })

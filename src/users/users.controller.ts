@@ -4,8 +4,6 @@ import { CreateUserDto } from './dtos/create-user.dto';
 import { ResponseDto } from '../common/response.dto';
 import { Profile, User } from '@prisma/client';
 import { CreateProfileDto } from './dtos/create-profile.dto';
-import { CustomException, EXCEPTION_STATUS } from '../common/custom-exception';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UpdateProfileDto } from './dtos/update-profile.dto';
 import { ChangePasswordDto } from './dtos/change-password.dto';
 

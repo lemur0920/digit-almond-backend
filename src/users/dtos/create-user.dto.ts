@@ -29,6 +29,9 @@ export class CreateUserDto {
   @IsInt()
   cityCode?: number;
 
+  @IsString()
+  countryCode: string;
+
   // @IsOptional()
   // firstLoginAt?: Date;
 }
