@@ -67,6 +67,11 @@ export const EXCEPTION_STATUS = {
       errorCode: 40001,
       message: '해당 국가는 존재하지 않습니다.',
       statusCode: 404
+    },
+    ALREADY_EXISTS: {
+      errorCode: 40002,
+      message: '데이터베이스에 이미 존재하는 국가입니다.',
+      statusCode: 409
     }
   },
   TODO: {

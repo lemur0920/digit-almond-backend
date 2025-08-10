@@ -14,9 +14,10 @@ import { PrismaModule } from './prisma/prisma.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { CountriesModule } from './countries/countries.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
-  imports: [UsersModule, AuthModule, TodosModule, PostsModule, MissionsModule, BadgesModule, CitiesModule, AlarmsModule, CountriesModule, PrismaModule, ConfigModule.forRoot(({ isGlobal: true }))],
+  imports: [UsersModule, AuthModule, TodosModule, PostsModule, MissionsModule, BadgesModule, CitiesModule, AlarmsModule, CountriesModule, PrismaModule, ConfigModule.forRoot(({ isGlobal: true })), CommentsModule],
   controllers: [AppController],
   providers: [
     {

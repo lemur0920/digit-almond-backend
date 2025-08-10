@@ -82,12 +82,12 @@ model Profile {
 }
 
 model Post {
-  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   title     String
   content   String
   tag       Tag?
-  viewCount Int
-  isDeleted Boolean
+  viewCount Int?     @default(0)
+  isDeleted Boolean? @default(false)
 
   userId String @db.ObjectId
   user   User   @relation("UserPosts", fields: [userId], references: [id])
@@ -104,7 +104,7 @@ model Comment {
   postId      String  @db.ObjectId
   commentorId String  @db.ObjectId
   content     String
-  isDeleted   Boolean
+  isDeleted   Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -187,7 +187,8 @@ model UserBadge {
 }
 
 model Country {
-  countryCode String  @id // KR, US 등의 ISO 코드
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  countryCode String  @unique // KR, US 등의 ISO 코드
   koreanName  String  @unique
   englishName String?
   cities      City[]  @relation("CountryCities")

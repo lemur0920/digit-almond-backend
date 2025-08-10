@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, MinLength } from 'class-validator';
+import { IsInt, IsOptional, IsString, MinLength } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
@@ -19,7 +19,7 @@ export class CreateUserDto {
   firstName: string;
 
   @IsString()
-  country: string;
+  countryCode: string;
 
   @IsOptional()
   @IsInt()
@@ -28,10 +28,4 @@ export class CreateUserDto {
   @IsOptional()
   @IsInt()
   cityCode?: number;
-
-  @IsString()
-  countryCode: string;
-
-  // @IsOptional()
-  // firstLoginAt?: Date;
 }

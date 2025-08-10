@@ -28,7 +28,6 @@ export class AuthController {
     //   throw new CustomException(EXCEPTION_STATUS.AUTH.INVALID_TOKEN);
     // }
     const userId = req?.user?.userId;
-    console.log(req.user);
     if (!userId) {
       throw new CustomException(EXCEPTION_STATUS.AUTH.UNAUTHENTICATED);
     }

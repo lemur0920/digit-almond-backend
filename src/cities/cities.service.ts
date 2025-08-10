@@ -30,8 +30,9 @@ export class CitiesService {
 
   async createCity(createCityDto: CreateCityDto): Promise<City> {
     const countryExists = await this.prisma.country.findUnique({
-      where: { id: createCityDto.countryCode }
+      where: { countryCode: createCityDto.countryCode }
     });
+
     const cityExists = await this.prisma.city.findUnique({
       where: {
         countryCode_name: {

@@ -2,18 +2,23 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Country } from '@prisma/client';
 import { CreateCountryDto } from './dtos/create-country.dto';
+import { CustomException, EXCEPTION_STATUS } from '../common/custom-exception';
 
 @Injectable()
 export class CountriesService {
   constructor(private readonly prisma: PrismaService) {}
 
   async createCountry(createCountryDto: CreateCountryDto): Promise<Country> {
-    const { countryCode, koreanName, englishName } = createCountryDto;
+    createCountryDto.englishName = createCountryDto.englishName ?? null;
+    const country = await this.prisma.country.findUnique({
+      where: { countryCode: createCountryDto.countryCode }
+    });
+    if (country) {
+      throw new CustomException(EXCEPTION_STATUS.COUNTRY.ALREADY_EXISTS);
+    }
     return this.prisma.country.create({
       data: {
-        countryCode,
-        koreanName,
-        englishName: englishName ?? null // null safety, no sql에서는 값이 없을 경우 아예 필드 자체가 생성이 안 됨.
+        ...createCountryDto
       }
     })
   }

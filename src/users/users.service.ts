@@ -43,13 +43,14 @@ export class UsersService {
     }
 
     const { password2, ...userData } = createUserDto;
-    console.log(userData)
+
+    userData.countryCode = country.countryCode;
+    userData.cityCode = city.cityCode;
+    userData.password = hashedPassword;
+
     return this.prisma.user.create({
       data: {
         ...userData,
-        password: hashedPassword,
-        cityCode: city.cityCode,
-        countryCode: country.countryCode,
         firstLoginAt: null
       }
     })
