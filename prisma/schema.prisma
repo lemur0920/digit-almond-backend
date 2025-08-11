@@ -100,11 +100,11 @@ model Post {
 }
 
 model Comment {
-  id          String  @id @map("_id") @db.ObjectId
-  postId      String  @db.ObjectId
-  commentorId String  @db.ObjectId
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  postId      String   @db.ObjectId
+  commentorId String   @db.ObjectId
   content     String
-  isDeleted   Boolean @default(false)
+  isDeleted   Boolean? @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -120,7 +120,7 @@ model Todo {
   userId      String   @db.ObjectId
   title       String
   description String?
-  isDone      Boolean  @default(false)
+  isDone      Boolean? @default(false)
   priority    Priority
 
   createdAt DateTime @default(now())
