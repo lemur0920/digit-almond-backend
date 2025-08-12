@@ -5,7 +5,6 @@ import { JwtModule } from '@nestjs/jwt';
 import * as process from 'process';
 import { JwtStrategy } from './jwt.strategy';
 import { UsersModule } from '../users/users.module';
-import { UsersService } from '../users/users.service';
 
 @Module({
   imports: [

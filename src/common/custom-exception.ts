@@ -88,9 +88,16 @@ export const EXCEPTION_STATUS = {
       statusCode: 404
     }
   },
+  COMMENT: {
+    NOT_FOUND: {
+      errorCode: 70001,
+      message: '해당 ID를 가진 댓글이 존재하지 않습니다.',
+      statusCode: 404
+    }
+  },
   PAGE: {
     INVALID_PARAMS: {
-      errorCode: 70001,
+      errorCode: 80001,
       message: 'page와 pageSize는 1 이상이어야 합니다.',
       statusCode: 400
     }

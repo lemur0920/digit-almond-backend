@@ -29,7 +29,7 @@ export class UsersController {
   @Post('me/profile')
   async createProfile(
     @Body() createProfileDto: CreateProfileDto,
-    @Req() req
+    @Req() req: any
   ): Promise<ResponseDto<Profile>> {
     const profile = this.usersService.createProfile(req.user.userId, createProfileDto);
     return ResponseDto.success({
@@ -41,7 +41,7 @@ export class UsersController {
   @Patch('me/profile')
   async updateProfile(
     @Body() updateProfileDto: UpdateProfileDto,
-    @Req() req
+    @Req() req: any
   ): Promise<ResponseDto<Profile>> {
     const updatedProfile = this.usersService.updateProfile(req.user.userId, updateProfileDto);
 
@@ -54,7 +54,7 @@ export class UsersController {
   @Patch('me/password')
   async changePassword(
     @Body() changePasswordDto: ChangePasswordDto,
-    @Req() req
+    @Req() req: any
     ): Promise<ResponseDto<void>> {
     await this.usersService.changePassword(req.user.userId, changePasswordDto);
 

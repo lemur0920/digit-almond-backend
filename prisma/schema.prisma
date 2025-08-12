@@ -215,9 +215,9 @@ model City {
 
 model Alarm {
   id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  receiverId String
+  receiverId String    @db.ObjectId
   type       AlarmType
-  isRead     Boolean
+  isRead     Boolean?  @default(false)
   createdAt  DateTime  @default(now())
 
   @@map("alarms")

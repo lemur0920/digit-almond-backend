@@ -5,27 +5,26 @@ import { UpdatePostDto } from './dtos/update-post.dto';
 import { Post as PostEntity, Prisma } from '@prisma/client';
 import { CustomException, EXCEPTION_STATUS } from '../common/custom-exception';
 import { PaginationUtil } from '../common/pagination.util';
+import { AlarmsService } from '../alarms/alarms.service';
 
 @Injectable()
 export class PostsService {
-  constructor(private readonly prisma: PrismaService) {};
+  constructor(
+    private readonly prisma: PrismaService,
+  ) {};
+
   async createPost(userId: string, createPostDto: CreatePostDto): Promise<PostEntity> {
     return this.prisma.post.create({
       data: {
         ...createPostDto,
         userId: userId,
       }
-    })
+    });
+
   }
 
   async updatePost(postId:string , updatePostDto: UpdatePostDto): Promise<PostEntity> {
-    const post = await this.prisma.post.findUnique({
-      where: { id: postId }
-    })
-
-    if (!post) {
-      throw new CustomException(EXCEPTION_STATUS.POST.NOT_FOUND);
-    }
+    await this.findPostOrThrow(postId);
 
     return this.prisma.post.update({
       where: { id: postId },
@@ -34,17 +33,19 @@ export class PostsService {
   }
 
   async deletePost(postId: string):Promise<void> {
-    const post = await this.prisma.post.findUnique({
-      where: { id: postId }
-    })
+    await this.findPostOrThrow(postId);
 
-    if (!post) {
-      throw new CustomException(EXCEPTION_STATUS.POST.NOT_FOUND);
-    }
+    await this.prisma.$transaction(async (prisma) => {
+      await prisma.comment.updateMany({
+        where: { postId: postId },
+        data: { isDeleted: true }
+      });
 
-    await this.prisma.post.delete({
-      where: { id: postId }
-    })
+      await prisma.post.update({
+        where: { id: postId },
+        data: { isDeleted: true }
+      })
+    });
   }
 
   async getPosts(page: number, pageSize: number): Promise<PostEntity[]> {
@@ -61,14 +62,27 @@ export class PostsService {
   }
 
 
-  //TODO: viewCount 증가
-  async getPostById(postId: string):Promise<PostEntity> {
-    const post = await this.prisma.post.findUnique({
-      where: {
-        id: postId,
-        isDeleted: false
+  // 실서비스 사용 로직
+  async getPostDetail(postId: string):Promise<PostEntity> {
+    await this.findPostOrThrow(postId);
+
+    return this.prisma.post.update({
+      where: { id: postId },
+      data: {
+        viewCount: {
+          increment: 1
+        }
       }
     })
+  }
+
+  //헬퍼 함수
+  async findPostOrThrow(postId: string, fields?: Prisma.PostSelect): Promise<PostEntity> {
+    const post = await this.prisma.post.findUnique({
+      where: { id: postId, isDeleted: false },
+      select: fields
+    });
+
     if (!post) {
       throw new CustomException(EXCEPTION_STATUS.POST.NOT_FOUND);
     }

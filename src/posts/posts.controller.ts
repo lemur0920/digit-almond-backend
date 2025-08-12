@@ -62,7 +62,7 @@ export class PostsController {
   async getPostById(
     @Param('id') postId: string
   ):Promise<ResponseDto<PostEntity>> {
-    const post = await this.postsService.getPostById(postId);
+    const post = await this.postsService.getPostDetail(postId);
 
     return ResponseDto.success({
       message: '게시글 상세 조회 성공',

@@ -12,7 +12,7 @@ export class TodosController {
 
   @Post()
   async createTodo(
-    @Req() req,
+    @Req() req: any,
     @Body() createTodoDto: CreateTodoDto
   ): Promise<ResponseDto<Todo>> {
     const newTodo = this.todosService.createTodo(req.user.userId, createTodoDto);
