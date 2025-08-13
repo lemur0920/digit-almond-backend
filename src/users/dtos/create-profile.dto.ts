@@ -1,4 +1,5 @@
 import { IsOptional, IsString } from 'class-validator';
+import { HasMimeType, IsFile } from 'nestjs-form-data';
 
 export class CreateProfileDto {
   @IsString()
@@ -8,7 +9,8 @@ export class CreateProfileDto {
   @IsOptional()
   description?: string;
 
-  @IsString()
+  @IsFile()
+  @HasMimeType(['image/jpeg', 'image/png'])
   @IsOptional()
-  imgUrl?: string;
+  imgPath?: string;
 }

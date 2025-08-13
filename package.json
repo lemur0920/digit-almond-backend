@@ -34,6 +34,7 @@
     "date-fns-tz": "^3.2.0",
     "dayjs": "^1.11.13",
     "jsonwebtoken": "^9.0.2",
+    "nestjs-form-data": "^1.9.93",
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1"

@@ -7,6 +7,7 @@ import { CreateProfileDto } from './dtos/create-profile.dto';
 import { UpdateProfileDto } from './dtos/update-profile.dto';
 import { ChangePasswordDto } from './dtos/change-password.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { FormDataInterceptor } from 'nestjs-form-data/dist/interceptors/FormData.interceptor';
 
 @Controller('users')
 export class UsersController {
@@ -28,7 +29,7 @@ export class UsersController {
 
 
   @Post('me/profile')
-  @UseInterceptors(FileInterceptor('image'))
+  @UseInterceptors(FormDataInterceptor)
   async createProfile(
     @UploadedFile() file: Express.Multer.File,
     @Body() createProfileDto: CreateProfileDto,
