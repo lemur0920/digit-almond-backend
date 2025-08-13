@@ -55,7 +55,15 @@ export class UsersService {
       }
     })
   }
-  async createProfile(userId: string, createProfileDto: CreateProfileDto): Promise<Profile> {
+  async createProfile(userId: string, createProfileDto: CreateProfileDto, filePath: string): Promise<Profile> {
+    const existingProfile = await this.prisma.profile.findUnique({
+      where: { userId: userId }
+    });
+
+    if (existingProfile) {
+      throw new CustomException(EXCEPTION_STATUS.PROFILE.ALREADY_EXISTS);
+    }
+
     return this.prisma.profile.create({
       data: {
         ...createProfileDto,

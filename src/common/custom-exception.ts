@@ -113,6 +113,13 @@ export const EXCEPTION_STATUS = {
       message: '알람을 찾을 수 없습니다.',
       statusCode: 404
     },
+  },
+  PROFILE: {
+    ALREADY_EXISTS: {
+      errorCode: 100001,
+      message: '이미 프로필이 존재합니다.',
+      statusCode: 409
+    }
   }
 
 }

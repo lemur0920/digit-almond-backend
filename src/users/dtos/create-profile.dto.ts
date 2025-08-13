@@ -7,8 +7,4 @@ export class CreateProfileDto {
   @IsString()
   @IsOptional()
   description?: string;
-
-  @IsString()
-  @IsOptional()
-  profileImage?: string;
 }

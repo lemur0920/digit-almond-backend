@@ -34,9 +34,10 @@ export class UsersController {
     @Body() createProfileDto: CreateProfileDto,
     @Req() req: any
   ): Promise<ResponseDto<Profile>> {
+    console.log(createProfileDto);
     console.log(file);
-    const filePath = file?.path;
-    const profile = this.usersService.createProfile(req.user.userId, { ...createProfileDto, profileImage: filePath });
+    const filePath = file?.path || null; // 파일 경로 설정
+    const profile = this.usersService.createProfile(req.user.userId, { nickname: createProfileDto.nickname, description: createProfileDto.description }, filePath);
     return ResponseDto.success({
       message: "프로필 생성 성공",
       data: await profile
