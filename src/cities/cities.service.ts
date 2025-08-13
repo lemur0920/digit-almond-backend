@@ -12,6 +12,9 @@ export class CitiesService {
     const city = await this.prisma.city.findUnique({
       where: { cityCode: cityCode }
     })
+    if (!city) {
+      throw new CustomException(EXCEPTION_STATUS.CITY.NOT_EXISTS);
+    }
     return city;
   }
 

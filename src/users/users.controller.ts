@@ -26,16 +26,16 @@ export class UsersController {
     return req.user;
   }
 
-
+  @UseInterceptors(FileInterceptor('profileImg'))
   @Post('me/profile')
-  @UseInterceptors(FileInterceptor('profileImage'))
   async createProfile(
     @UploadedFile() file: Express.Multer.File,
     @Body() createProfileDto: CreateProfileDto,
     @Req() req: any
   ): Promise<ResponseDto<Profile>> {
-    console.log(createProfileDto);
-    console.log(file);
+    console.log('Uploaded File:', file); // 파일 정보 출력
+    console.log('DTO Data:', createProfileDto); // DTO 데이터 출력
+
     const filePath = file?.path || null; // 파일 경로 설정
     const profile = this.usersService.createProfile(req.user.userId, { nickname: createProfileDto.nickname, description: createProfileDto.description }, filePath);
     return ResponseDto.success({
@@ -43,7 +43,13 @@ export class UsersController {
       data: await profile
     })
   }
-
+  @Post('abc')
+  @UseInterceptors(FileInterceptor('file'))
+  fileTest(
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    console.log(file);
+  }
   @Patch('me/profile')
   async updateProfile(
     @UploadedFile() file: Express.Multer.File,

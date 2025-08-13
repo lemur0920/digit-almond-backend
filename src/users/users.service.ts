@@ -33,10 +33,10 @@ export class UsersService {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(createUserDto.password, saltRounds);
 
-    const city = await this.citiesService.findCityByCityCode(createUserDto.cityCode);
-    if (!city) {
-      throw new CustomException(EXCEPTION_STATUS.CITY.NOT_EXISTS);
+    if (createUserDto.cityCode != null) {
+      const city = await this.citiesService.findCityByCityCode(createUserDto.cityCode);
     }
+
     const country = await this.countriesService.findCountryByCountryCode(createUserDto.countryCode);
     if(!country) {
       throw new CustomException(EXCEPTION_STATUS.COUNTRY.NOT_EXISTS);
@@ -44,8 +44,6 @@ export class UsersService {
 
     const { password2, ...userData } = createUserDto;
 
-    userData.countryCode = country.countryCode;
-    userData.cityCode = city.cityCode;
     userData.password = hashedPassword;
 
     return this.prisma.user.create({
