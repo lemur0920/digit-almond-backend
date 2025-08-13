@@ -15,9 +15,10 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { CountriesModule } from './countries/countries.module';
 import { CommentsModule } from './comments/comments.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
-  imports: [UsersModule, AuthModule, TodosModule, PostsModule, MissionsModule, BadgesModule, CitiesModule, AlarmsModule, CountriesModule, PrismaModule, ConfigModule.forRoot(({ isGlobal: true })), CommentsModule],
+  imports: [UsersModule, AuthModule, TodosModule, PostsModule, MissionsModule, BadgesModule, CitiesModule, AlarmsModule, CountriesModule, PrismaModule, ConfigModule.forRoot(({ isGlobal: true })), CommentsModule, MulterModule.register({ dest: './uploads' })],
   controllers: [AppController],
   providers: [
     {

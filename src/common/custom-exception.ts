@@ -36,7 +36,12 @@ export const EXCEPTION_STATUS = {
       errorCode: 10007,
       message: '비밀번호가 일치하지 않습니다.',
       statusCode: 400
-    }
+    },
+    FORBIDDEN: {
+      errorCode: 10008,
+      message: '삭제 권한이 없습니다.',
+      statusCode: 403
+    },
     },
   USER: {
     ALREADY_EXISTS: {
@@ -101,6 +106,13 @@ export const EXCEPTION_STATUS = {
       message: 'page와 pageSize는 1 이상이어야 합니다.',
       statusCode: 400
     }
+  },
+  ALARM: {
+    NOT_FOUND: {
+      errorCode: 90001,
+      message: '알람을 찾을 수 없습니다.',
+      statusCode: 404
+    },
   }
 
 }

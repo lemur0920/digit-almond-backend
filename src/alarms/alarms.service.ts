@@ -1,6 +1,7 @@
 import { Body, Injectable, Post } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AlarmType, Prisma } from '@prisma/client';
+import { CustomException, EXCEPTION_STATUS } from '../common/custom-exception';
 
 @Injectable()
 export class AlarmsService {
@@ -37,10 +38,21 @@ export class AlarmsService {
     } as Prisma.AlarmFindManyArgs)
   }
 
-  async deleteAlarms(alarmId: string) {
-    return this.prisma.alarm.delete({
+  async deleteAlarms(alarmId: string, userId: string): Promise<void> {
+    const alarm = await this.prisma.alarm.findUnique({
+      where: { id: alarmId }
+    });
+
+    if (!alarm) {
+      throw new CustomException(EXCEPTION_STATUS.ALARM.NOT_FOUND);
+    }
+    if (alarm.receiverId !== userId) {
+      throw new CustomException(EXCEPTION_STATUS.AUTH.FORBIDDEN);
+    }
+
+    // 알람 삭제
+    await this.prisma.alarm.delete({
       where: { id: alarmId }
     })
   }
-
 }

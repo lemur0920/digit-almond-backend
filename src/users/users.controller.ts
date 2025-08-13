@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { ResponseDto } from '../common/response.dto';
@@ -6,6 +6,7 @@ import { Profile, User } from '@prisma/client';
 import { CreateProfileDto } from './dtos/create-profile.dto';
 import { UpdateProfileDto } from './dtos/update-profile.dto';
 import { ChangePasswordDto } from './dtos/change-password.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('users')
 export class UsersController {
@@ -27,7 +28,9 @@ export class UsersController {
 
 
   @Post('me/profile')
+  @UseInterceptors(FileInterceptor('image'))
   async createProfile(
+    @UploadedFile() file: Express.Multer.File,
     @Body() createProfileDto: CreateProfileDto,
     @Req() req: any
   ): Promise<ResponseDto<Profile>> {
