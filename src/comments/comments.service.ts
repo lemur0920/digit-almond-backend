@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CustomException, EXCEPTION_STATUS } from '../common/custom-exception';
-import { Comment, Prisma } from '@prisma/client';
+import { AlarmType, Comment, Prisma } from '@prisma/client';
 import { PaginationUtil } from '../common/pagination.util';
 import { CreateCommentDto } from './dtos/create-comment.dto';
 import { PostsService } from '../posts/posts.service';
@@ -40,7 +40,7 @@ export class CommentsService {
         commentorId: commentorId
       },
     });
-    await this.alarmsService.createAlarm(authorId, 'COMMENT')
+    await this.alarmsService.createAlarmForComment(postId, authorId, AlarmType.COMMENT);
 
     return comment;
 

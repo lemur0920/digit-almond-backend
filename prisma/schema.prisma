@@ -217,7 +217,7 @@ model Alarm {
   id         String    @id @default(auto()) @map("_id") @db.ObjectId
   receiverId String    @db.ObjectId
   type       AlarmType
-  isRead     Boolean?  @default(false)
+  postId     String?   @db.ObjectId
   createdAt  DateTime  @default(now())
 
   @@map("alarms")
