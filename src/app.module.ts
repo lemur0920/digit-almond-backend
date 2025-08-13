@@ -16,9 +16,21 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { CountriesModule } from './countries/countries.module';
 import { CommentsModule } from './comments/comments.module';
 import { MulterModule } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 
 @Module({
-  imports: [UsersModule, AuthModule, TodosModule, PostsModule, MissionsModule, BadgesModule, CitiesModule, AlarmsModule, CountriesModule, PrismaModule, ConfigModule.forRoot(({ isGlobal: true })), CommentsModule, MulterModule.register({ dest: './uploads' })],
+  imports: [UsersModule, AuthModule, TodosModule, PostsModule, MissionsModule, BadgesModule, CitiesModule, AlarmsModule, CountriesModule, PrismaModule, ConfigModule.forRoot(({ isGlobal: true })), CommentsModule,
+    MulterModule.register({
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, cb) => {
+          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+          cb(null, `${file.fieldname}-${uniqueSuffix}-${file.originalname}`);
+        },
+      })
+    })
+
+  ],
   controllers: [AppController],
   providers: [
     {
