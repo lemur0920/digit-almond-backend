@@ -31,7 +31,6 @@ export class UsersController {
   @Post('me/profile')
   @UseInterceptors(FormDataInterceptor)
   async createProfile(
-    @UploadedFile() file: Express.Multer.File,
     @Body() createProfileDto: CreateProfileDto,
     @Req() req: any
   ): Promise<ResponseDto<Profile>> {
