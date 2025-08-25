@@ -2,13 +2,23 @@ import { Body, Injectable, Post } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AlarmType, Prisma } from '@prisma/client';
 import { CustomException, EXCEPTION_STATUS } from '../common/custom-exception';
+import { InjectMetric } from '@willsoto/nestjs-prometheus';
+import { Counter } from 'prom-client';
 
 @Injectable()
 export class AlarmsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    @InjectMetric('alarm_creation_attempts_total')
+    private readonly creationAttemptsMetric: Counter<string>,
+    @InjectMetric('alarm_deletion_attempts_total')
+    private readonly deletionAttemptsMetric: Counter<string>,
+  ) {}
 
   async createAlarmForComment(postId: string, receiverId: string, type: AlarmType) {
     // 게시글 관련 알람이 이미 존재하는지 확인
+    this.creationAttemptsMetric.inc();
+
     const existingAlarm = await this.prisma.alarm.findFirst({
       where: {
         receiverId: receiverId,
@@ -39,6 +49,8 @@ export class AlarmsService {
   }
 
   async deleteAlarms(alarmId: string, userId: string): Promise<void> {
+    this.deletionAttemptsMetric.inc();
+
     const alarm = await this.prisma.alarm.findUnique({
       where: { id: alarmId }
     });

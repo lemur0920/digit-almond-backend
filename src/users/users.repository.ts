@@ -19,4 +19,10 @@ export class UsersRepository {
     })
     return user;
   }
+
+  async findProfileById(userId: string) {
+    return this.prisma.profile.findUnique({
+      where: { userId: userId },
+    });
+  }
 }

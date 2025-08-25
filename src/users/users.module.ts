@@ -5,9 +5,10 @@ import { CitiesService } from '../cities/cities.service';
 import { CitiesModule } from '../cities/cities.module';
 import { UsersRepository } from './users.repository';
 import { CountriesModule } from '../countries/countries.module';
+import { RedisModule } from '../redis/redis.module';
 
 @Module({
-  imports: [CitiesModule, CountriesModule],
+  imports: [CitiesModule, CountriesModule, RedisModule],
   controllers: [UsersController],
   providers: [UsersService, UsersRepository],
   exports: [UsersService, UsersRepository]

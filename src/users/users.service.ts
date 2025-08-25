@@ -10,6 +10,7 @@ import { UsersRepository } from './users.repository';
 import { UpdateProfileDto } from './dtos/update-profile.dto';
 import { ChangePasswordDto } from './dtos/change-password.dto';
 import { CountriesService } from '../countries/countries.service';
+import { RedisService } from '../redis/redis.service';
 
 @Injectable()
 export class UsersService {
@@ -17,7 +18,8 @@ export class UsersService {
     private readonly prisma: PrismaService,
     private readonly usersRepository: UsersRepository,
     private readonly citiesService: CitiesService,
-    private readonly countriesService: CountriesService
+    private readonly countriesService: CountriesService,
+    private readonly redisService: RedisService
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
@@ -65,11 +67,38 @@ export class UsersService {
     return this.prisma.profile.create({
       data: {
         ...createProfileDto,
+        profileImg: filePath,
         user: {
           connect: { id:userId },
         }
       }
     })
+  }
+
+  async getProfile(userId: string): Promise<Profile | null> {
+    const cacheKey = `user:${userId}:profile`;
+
+    // 1. 캐시 조회
+    const cachedProfile = await this.redisService.get(cacheKey);
+    if (cachedProfile) return JSON.parse(cachedProfile);
+
+    // 2. DB 조회
+    const profile = await this.usersRepository.findProfileById(userId);
+    console.log(profile);
+    if (!profile) return null;
+
+    // 객체 스트링으로 변환
+    const profileToCache = {
+      id: profile.id,
+      nickname: profile.nickname,
+      profileImg: profile.profileImg
+    }
+    console.log(profileToCache);
+
+    // 3. 캐시에 저장(1시간)
+    await this.redisService.set(cacheKey, JSON.stringify(profileToCache), 3600)
+    console.log(this.redisService.get(cacheKey));
+    return profile;
   }
 
   async validatePassword(password: string, hashedPassword: string): Promise<boolean> {

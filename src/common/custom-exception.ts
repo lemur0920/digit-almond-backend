@@ -119,6 +119,11 @@ export const EXCEPTION_STATUS = {
       errorCode: 100001,
       message: '이미 프로필이 존재합니다.',
       statusCode: 409
+    },
+    NOT_FOUND: {
+      errorCode: 100002,
+      message: '프로필을 찾을 수 없습니다.',
+      statusCode: 404
     }
   }
 

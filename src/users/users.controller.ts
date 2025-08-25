@@ -7,6 +7,8 @@ import { CreateProfileDto } from './dtos/create-profile.dto';
 import { UpdateProfileDto } from './dtos/update-profile.dto';
 import { ChangePasswordDto } from './dtos/change-password.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 
 @Controller('users')
 export class UsersController {
@@ -22,11 +24,22 @@ export class UsersController {
     })
   }
   @Get('me')
-  getProfile(@Req() req) {
-    return req.user;
+  async getProfile(@Req() req) {
+    const userId = req.user.userId;
+    console.log(userId);
+    const profile = await this.usersService.getProfile(userId);
   }
 
-  @UseInterceptors(FileInterceptor('profileImg'))
+  @UseInterceptors(FileInterceptor('profileImg',
+    {
+      storage: diskStorage({
+        destination: './uploads/profiles',
+        filename: (req, file, cb) => {
+          const name = `${Date.now()}${extname(file.originalname)}`;
+          cb(null, name);
+        }
+      })
+    }))
   @Post('me/profile')
   async createProfile(
     @UploadedFile() file: Express.Multer.File,
@@ -36,7 +49,7 @@ export class UsersController {
     console.log('Uploaded File:', file); // 파일 정보 출력
     console.log('DTO Data:', createProfileDto); // DTO 데이터 출력
 
-    const filePath = file?.path || null; // 파일 경로 설정
+    const filePath = file?.destination + '/' + file.filename;
     const profile = this.usersService.createProfile(req.user.userId, { nickname: createProfileDto.nickname, description: createProfileDto.description }, filePath);
     return ResponseDto.success({
       message: "프로필 생성 성공",

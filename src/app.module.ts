@@ -17,13 +17,21 @@ import { CountriesModule } from './countries/countries.module';
 import { CommentsModule } from './comments/comments.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import { RedisService } from './redis/redis.service';
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
+import { RedisModule } from './redis/redis.module';
 
 @Module({
   imports: [UsersModule, AuthModule, TodosModule, PostsModule, MissionsModule, BadgesModule, CitiesModule, AlarmsModule, CountriesModule, PrismaModule, ConfigModule.forRoot(({ isGlobal: true })), CommentsModule,
     MulterModule.register({
       dest: './upload',
-    })
-
+    }),
+    PrometheusModule.register({
+      defaultMetrics: {
+        enabled: true,
+      },
+    }),
+    RedisModule,
   ],
   controllers: [AppController],
   providers: [
@@ -31,7 +39,9 @@ import { diskStorage } from 'multer';
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
-    AppService
+    AppService,
+    RedisService
   ],
+  exports: [RedisService],
 })
 export class AppModule {}
