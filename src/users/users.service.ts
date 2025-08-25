@@ -84,7 +84,6 @@ export class UsersService {
 
     // 2. DB 조회
     const profile = await this.usersRepository.findProfileById(userId);
-    console.log(profile);
     if (!profile) return null;
 
     // 객체 스트링으로 변환
@@ -93,7 +92,6 @@ export class UsersService {
       nickname: profile.nickname,
       profileImg: profile.profileImg
     }
-    console.log(profileToCache);
 
     // 3. 캐시에 저장(1시간)
     await this.redisService.set(cacheKey, JSON.stringify(profileToCache), 3600)

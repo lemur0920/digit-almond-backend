@@ -24,13 +24,7 @@ export class AuthController {
 
   @Post('logout')
   async logout(@Req() req): Promise<ResponseDto<null>> {
-    // if (!refreshToken) {
-    //   throw new CustomException(EXCEPTION_STATUS.AUTH.INVALID_TOKEN);
-    // }
-    const userId = req?.user?.userId;
-    if (!userId) {
-      throw new CustomException(EXCEPTION_STATUS.AUTH.UNAUTHENTICATED);
-    }
+    const userId = req.user.userId;
     await this.authService.logout(userId);
 
     return ResponseDto.success({

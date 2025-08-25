@@ -125,6 +125,18 @@ export const EXCEPTION_STATUS = {
       message: '프로필을 찾을 수 없습니다.',
       statusCode: 404
     }
+  },
+  REDIS: {
+    ERROR: {
+      errorCode: 110001,
+      message: 'Redis 작업 중 오류가 발생했습니다.',
+      statusCode: 500
+    },
+    KEY_NOT_FOUND: {
+      errorCode: 110002,
+      message: 'Redis에서 해당 키를 찾을 수 없습니다.',
+      statusCode: 404
+    }
   }
 
 }

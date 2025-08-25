@@ -6,6 +6,7 @@ import { UsersService } from '../users/users.service';
 import { CustomException, EXCEPTION_STATUS } from '../common/custom-exception';
 import { PrismaService } from '../prisma/prisma.service';
 import { UsersRepository } from '../users/users.repository';
+import { RedisService } from '../redis/redis.service';
 
 @Injectable()
 export class AuthService {
@@ -14,11 +15,18 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly usersService: UsersService,
     private readonly usersRepository: UsersRepository,
+    private readonly redisService: RedisService
   ) {}
 
-  generateAccessToken(user: User): string {
+  async generateAccessToken(user: User):Promise<string> {
     const payload = { sub: user.id, email: user.email };
-    return this.jwtService.sign(payload, { expiresIn: '7d' });
+    const token = this.jwtService.sign(payload, { expiresIn: '7d' });
+
+    // Redis 토큰 저장 (TTL: 1시간)
+    const cacheKey = `auth:token:${user.id}`;
+    await this.redisService.set(cacheKey, token, 3600);
+
+    return token;
   }
 
   async generateRefreshToken(user: User): Promise<string> {
@@ -41,6 +49,22 @@ export class AuthService {
 
 
     return refreshToken;
+  }
+
+  async deleteAccessToken(userId: string): Promise<void> {
+    const cacheKey = `auth:token:${userId}`;
+    try {
+      const cachedToken = await this.redisService.get(cacheKey);
+      if (cachedToken === null) {
+        throw new CustomException(EXCEPTION_STATUS.REDIS.KEY_NOT_FOUND);
+      }
+      await this.redisService.del(cacheKey);
+    } catch (error) {
+      if (error instanceof CustomException) {
+        throw error;
+      }
+      throw new CustomException(EXCEPTION_STATUS.REDIS.ERROR);
+    }
   }
 
   async revokeRefreshToken(userId: string): Promise<void> {
@@ -68,10 +92,18 @@ export class AuthService {
       throw new CustomException(EXCEPTION_STATUS.USER.NOT_FOUND);
     }
 
-    const newAccessToken = this.generateAccessToken(user);
+    const newAccessToken = await this.generateAccessToken(user);
     const newRefreshToken = await this.generateRefreshToken(user);
 
     return { accessToken: newAccessToken, refreshToken: newRefreshToken };
+  }
+
+  async validateToken(userId: string, token: string): Promise<boolean> {
+    const cacheKey = `auth:token:${userId}`;
+    const cachedToken = await this.redisService.get(cacheKey);
+
+    // Redis에 저장된 토큰과 값 비교
+    return cachedToken == token;
   }
 
   async login(loginDto: LoginDto): Promise<{ accessToken: string, refreshToken: string }> {
@@ -118,14 +150,19 @@ export class AuthService {
         });
       }
     }
-    const accessToken = this.generateAccessToken(user);
+    const accessToken = await this.generateAccessToken(user);
     const refreshToken = await this.generateRefreshToken(user);
+
+    const cacheKey = `auth:token:${user.id}`;
+    await this.redisService.set(cacheKey, accessToken, 3600);
 
     return { accessToken, refreshToken };
 
   }
 
   async logout(userId: string): Promise<void> {
-    await this.revokeRefreshToken(userId)
+
+    await this.deleteAccessToken(userId);
+    await this.revokeRefreshToken(userId);
   }
 }
