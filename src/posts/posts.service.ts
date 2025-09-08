@@ -6,21 +6,35 @@ import { Post as PostEntity, Prisma } from '@prisma/client';
 import { CustomException, EXCEPTION_STATUS } from '../common/custom-exception';
 import { PaginationUtil } from '../common/pagination.util';
 import { AlarmsService } from '../alarms/alarms.service';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bullmq';
 
 @Injectable()
 export class PostsService {
   constructor(
     private readonly prisma: PrismaService,
-  ) {};
+    @InjectQueue('mission-queue') private readonly missionQueue: Queue,
+  ) {}
 
   async createPost(userId: string, createPostDto: CreatePostDto): Promise<PostEntity> {
-    return this.prisma.post.create({
+    await this.missionQueue.add(
+      'post.created',
+      {
+        userId: userId,
+        type: 'CREATE_POST',
+      },
+      {
+        removeOnComplete: true, // 완료된 작업 큐에서 제거
+        removeOnFail: true, // 실패한 작업도 큐에서 제거
+      }
+    )
+
+      return this.prisma.post.create({
       data: {
         ...createPostDto,
         userId: userId,
       }
     });
-
   }
 
   async updatePost(postId:string , updatePostDto: UpdatePostDto): Promise<PostEntity> {

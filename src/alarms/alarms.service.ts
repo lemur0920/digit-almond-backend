@@ -4,6 +4,14 @@ import { AlarmType, Prisma } from '@prisma/client';
 import { CustomException, EXCEPTION_STATUS } from '../common/custom-exception';
 import { InjectMetric } from '@willsoto/nestjs-prometheus';
 import { Counter } from 'prom-client';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bullmq';
+
+export interface AlarmJobData {
+  type: AlarmType,
+  receiverId: string;
+  postId?: string;
+}
 
 @Injectable()
 export class AlarmsService {
@@ -13,7 +21,12 @@ export class AlarmsService {
     private readonly creationAttemptsMetric: Counter<string>,
     @InjectMetric('alarm_deletion_attempts_total')
     private readonly deletionAttemptsMetric: Counter<string>,
+    @InjectQueue('alarm-queue') private readonly alarmQueue: Queue
   ) {}
+
+  async addAlarmJob(jobData: AlarmJobData) {
+    await this.alarmQueue.add(jobData.type, jobData);
+  }
 
   async createAlarmForComment(postId: string, receiverId: string, type: AlarmType) {
     // 게시글 관련 알람이 이미 존재하는지 확인

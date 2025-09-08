@@ -20,7 +20,7 @@ export class PostsController {
     return ResponseDto.success({
       message: '게시글 등록 성공',
       data: newPost
-    })
+    }) 
   }
 
   @Patch(':id')

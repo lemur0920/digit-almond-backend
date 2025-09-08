@@ -20,6 +20,7 @@ import { diskStorage } from 'multer';
 import { RedisService } from './redis/redis.service';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { RedisModule } from './redis/redis.module';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
   imports: [UsersModule, AuthModule, TodosModule, PostsModule, MissionsModule, BadgesModule, CitiesModule, AlarmsModule, CountriesModule, PrismaModule, ConfigModule.forRoot(({ isGlobal: true })), CommentsModule,
@@ -28,8 +29,14 @@ import { RedisModule } from './redis/redis.module';
     }),
     PrometheusModule.register({
       defaultMetrics: {
-        enabled: true,
+      enabled: true,
       },
+    }),
+    BullModule.forRoot({
+      redis: {
+        host: process.env.REDIS_HOST,
+        port: 6379
+      }
     }),
     RedisModule,
   ],

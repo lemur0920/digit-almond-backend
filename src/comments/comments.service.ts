@@ -29,20 +29,25 @@ export class CommentsService {
     } as Prisma.CommentFindManyArgs)
   }
 
-  //TODO: 동작 체크
   async createComment(postId: string, commentorId: string, createCommentDto: CreateCommentDto): Promise<Comment> {
     const post = await this.postsService.findPostOrThrow(postId, { userId: true });
     const authorId = post.userId;
-    const comment = await this.prisma.comment.create({
+    const newComment = await this.prisma.comment.create({
       data: {
         ...createCommentDto,
         postId: postId,
         commentorId: commentorId
       },
     });
-    await this.alarmsService.createAlarmForComment(postId, authorId, AlarmType.COMMENT);
 
-    return comment;
+    // 알람 작업 큐에 추가
+    await this.alarmsService.addAlarmJob({
+      type: 'COMMENT',
+      receiverId: post.userId,
+      postId: newComment.postId
+    })
+
+    return newComment;
 
   }
 
