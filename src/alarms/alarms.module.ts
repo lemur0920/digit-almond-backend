@@ -5,6 +5,7 @@ import { RedisService } from '../redis/redis.service';
 import { makeCounterProvider, PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { Counter } from 'prom-client';
 import { BullModule } from '@nestjs/bull';
+import { AlarmProcessor } from './alarms.processor';
 
 @Module({
   imports: [

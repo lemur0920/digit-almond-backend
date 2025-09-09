@@ -35,7 +35,8 @@ import { BullModule } from '@nestjs/bull';
     BullModule.forRoot({
       redis: {
         host: process.env.REDIS_HOST,
-        port: 6379
+        port: 6379,
+        password: process.env.REDIS_PASSWORD
       }
     }),
     RedisModule,
