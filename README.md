@@ -1,5 +1,4 @@
 <a href="https:///" target="_blank">
-<img src="https://github.com/user-attachments/assets/9c247c0e-c0e3-427e-8e48-db0dc0bf8d88" alt="배너" width="100%"/>
 </a>
 
 <br/>
@@ -8,26 +7,6 @@
 # 1. Project Overview
 - 프로젝트 이름: DigitAlmond
 - 프로젝트 설명: 지방 소도시 워케이션/디지털노마드 유입을 위한 통합 거점형 체류 플랫폼
-
-<br/>
-<br/>
-
-# 2. Team Members 
-| 공백 | 장성권 | 공백 | 공백 | 공백 | 공백 |
-|:------:|:------:|:------:|:------:|:------:|:------:|
-| <img src="https://github.com/user-attachments/assets/4a72443c-2141-4cc4-ac7d-344e23b27511" alt="장성권" width="150"> | <img src="https://github.com/user-attachments/assets/4a72443c-2141-4cc4-ac7d-344e23b27511" alt="공백" width="150"> | <img src="https://github.com/user-attachments/assets/4a72443c-2141-4cc4-ac7d-344e23b27511" alt="공백" width="150"> | <img src="https://github.com/user-attachments/assets/4a72443c-2141-4cc4-ac7d-344e23b27511" alt="공백" width="150"> | <img src="https://github.com/user-attachments/assets/4a72443c-2141-4cc4-ac7d-344e23b27511" alt="공백" width="150"> | <img src="https://github.com/user-attachments/assets/4a72443c-2141-4cc4-ac7d-344e23b27511" alt="공백" width="150"> | 
-| PL | BE | FE | FE | DB | AI | 
-| [GitHub](https://github.com/공백) | [GitHub](https://github.com/lemur0920) | [GitHub](https://github.com/공백) | [GitHub](https://github.com/공백) | [GitHub](https://github.com/공백) | [GitHub](https://github.com/공백) |
-
-<br/>
-<br/>
-
-# 3. Demo 
-https://github.com/lemur0920/digit-almond-backend
-<br>
-ID: hiyo
-<br>
-PW: abcde123
 
 <br/>
 <br/>
@@ -62,36 +41,22 @@ PW: abcde123
 <br/>
 
 # 5. DB ERD
-
+<img width="1727" height="863" alt="Image" src="https://github.com/user-attachments/assets/b7d3cddf-e2c8-49e9-8f69-470ca4e55ebe" />
 <br/>
 <br/>
 
 # 6. Project Structure 
-```
-digit-almond-backend/
-├── src/
-│   ├── app.controller.spec.ts    
-│   ├── app.controller.ts         
-│   ├── app.module.ts             
-│   ├── app.service.ts            
-│   └── main.ts                   
-│
-├── test/
-│   └── app.e2e-spec.ts           
-│   └── jest-e2e.json             
-│
-└── ...
 
-```
+
 <br/>
 <br/>
 
 # 7. Key Features
-- **회원가입**:
+<!-- - **회원가입**:
   - 회원가입 시 DB에 유저정보가 등록됩니다.
 
 - **로그인**:
-  - 사용자 인증 정보를 통해 로그인합니다.
+  - 사용자 인증 정보를 통해 로그인합니다. -->
 
 <br/>
 <br/>
